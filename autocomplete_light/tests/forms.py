@@ -4,6 +4,7 @@ from django import VERSION
 from django import http
 from django import forms
 from django.utils.encoding import force_text
+from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.forms.models import modelform_factory
 
@@ -84,6 +85,30 @@ class ModelFormBaseTestCase(BaseModelFormTestCase):
     def assertNotIsAutocomplete(self, name):
         self.assertNotIsInstance(self.form.fields[name],
                 autocomplete_light.FieldBase)
+
+    def test_no_conflict_with_django_fields(self):
+        class Rel(object):
+            def __init__(self, to):
+                self.to = to
+
+        class StrangeRelationField(models.CharField):
+            def __init__(self, to, *args, **kwargs):
+                super(StrangeRelationField, self).__init__(*args, **kwargs)
+                self.rel = Rel(to)
+
+        class RelatedModel(models.Model):
+            pass
+
+        class TestModel(models.Model):
+            strange_relation = StrangeRelationField(RelatedModel)
+
+        autocomplete_light.register(RelatedModel, search_fields=['pk'])
+
+        class Fixture(autocomplete_light.ModelForm):
+            class Meta:
+                model = TestModel
+
+        Fixture()
 
     def test_appropriate_field_on_modelform(self):
         self.form = self.model_form_class()
