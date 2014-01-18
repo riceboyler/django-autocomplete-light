@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'autocomplete_light.example_apps.security_test',
     'autocomplete_light.example_apps.dependant_autocomplete',
     'autocomplete_light.example_apps.non_admin_add_another',
+    'autocomplete_light.example_apps.readonly_autocomplete_field',
 
     'navigation_autocomplete',
 )
