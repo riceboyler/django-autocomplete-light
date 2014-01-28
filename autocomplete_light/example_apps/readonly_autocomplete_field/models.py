@@ -14,6 +14,7 @@ class RelatedModel(models.Model):
 class TestMtm(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     relation = models.ManyToManyField(RelatedModel)
+    datetime = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name or super(RelatedModel, self).__str__()
@@ -23,6 +24,7 @@ class TestMtm(models.Model):
 class TestFk(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     relation = models.ForeignKey(RelatedModel)
+    datetime = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name or super(RelatedModel, self).__str__()
@@ -32,6 +34,7 @@ class TestFk(models.Model):
 class TestOto(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     relation = models.OneToOneField(RelatedModel)
+    datetime = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name or super(RelatedModel, self).__str__()
