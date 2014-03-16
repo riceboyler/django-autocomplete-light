@@ -507,9 +507,24 @@ yourlabs.Autocomplete.prototype.fixPosition = function() {
     this.input.parents().filter(function() {
         return $(this).css('overflow') === 'hidden';
     }).first().css('overflow', 'visible');
-	
-    this.box.insertAfter(this.input).css(
-            {top: pos.top + pos.height, left: pos.left});
+
+    var inModal = this.input.parents().filter(function() {
+        return $(this).hasClass("modal");
+    }).length > 0;
+
+    var isChrome = navigator.userAgent.match("Chrome") !== null;
+
+    if (inModal && isChrome) {
+        this.box.insertAfter(this.input).css({
+            top: 0,
+            left: pos.left
+        });
+    } else {
+        this.box.insertAfter(this.input).css({
+            top: pos.top + pos.height,
+            left: pos.left
+        });
+    }
 }
 
 // Proxy fetch(), with some sanity checks.
